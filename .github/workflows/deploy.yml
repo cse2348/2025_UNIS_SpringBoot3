@@ -55,4 +55,4 @@ jobs:
           script: |
             docker pull ${{ secrets.ECR_REPOSITORY }}:latest  # 최신 이미지를 ECR에서 가져옴
             docker stop app || true && docker rm app || true  # 기존 컨테이너가 있으면 중지하고 삭제 (에러 방지용)
-            docker run -d --name app -p 8080:8080 ${{ secrets.ECR_REPOSITORY }}:latest  # 새 컨테이너 실행 (8080 포트 연결)
+            docker run -d --name app -p 8080:8080 ${{ secrets.ECR_REPOSITORY }}:latest  #새 컨테이너 실행 (8080 포트 연결)
