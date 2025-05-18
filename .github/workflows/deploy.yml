@@ -51,7 +51,7 @@ jobs:
         with:
           host: ${{ secrets.EC2_HOST }}  # EC2 접속 주소 (ex. ec2-user@<퍼블릭 IP>)
           username: ec2-user  # Amazon Linux 기본 사용자명
-          key: ${{ secrets.EC2_KEY }}  # base64로 인코딩된 pem 키 (GitHub Secrets에 등록된 값)
+          key: ${{ secrets.EC2_KEY }}  #base64로 인코딩된 pem 키 (GitHub Secrets에 등록된 값)
           script: |
             docker pull ${{ secrets.ECR_REPOSITORY }}:latest  # 최신 이미지를 ECR에서 가져옴
             docker stop app || true && docker rm app || true  # 기존 컨테이너가 있으면 중지하고 삭제 (에러 방지용)
