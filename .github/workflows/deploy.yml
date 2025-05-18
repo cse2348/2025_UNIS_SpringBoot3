@@ -45,18 +45,17 @@ jobs:
           IMAGE_URI=${{ secrets.ECR_REPOSITORY }}:latest  # 사용할 Docker 이미지 태그 정의
           docker build -t $IMAGE_URI .  # 현재 디렉토리(.)에 있는 Dockerfile을 기준으로 이미지 빌드
           docker push $IMAGE_URI  # 빌드한 이미지를 ECR에 push (업로드)
-
-      - name: Debug key format (실제 실행 안 됨)
-        run: echo "$EC2_KEY" | head -n 5
-        env:
-          EC2_KEY: ${{ secrets.EC2_KEY }}
+      - name: Decode SSH key and save to file
+        run: |
+          echo "${{ secrets.EC2_KEY_B64 }}" | base64 --decode > ec2_key.pem
+          chmod 600 ec2_key.pem
 
       - name: SSH into EC2 and Deploy
         uses: appleboy/ssh-action@v1.0.0  # EC2에 SSH로 접속하여 명령어를 실행하기 위한 액션
         with:
           host: ${{ secrets.EC2_HOST }}  # EC2 접속 주소 (ex. ec2-user@<퍼블릭 IP>)
           username: ec2-user  # Amazon Linux 기본 사용자명
-          key: ${{ secrets.EC2_KEY }}  # base64로 인코딩된 pem 키 (GitHub Secrets에 등록된 값)
+          key_path: ec2_key.pem  # 파일 직접 지정
           script: |
             docker pull ${{ secrets.ECR_REPOSITORY }}:latest  # 최신 이미지를 ECR에서 가져옴
             docker stop app || true && docker rm app || true  # 기존 컨테이너가 있으면 중지하고 삭제 (에러 방지용)
