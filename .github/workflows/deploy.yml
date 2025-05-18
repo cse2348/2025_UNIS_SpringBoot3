@@ -16,6 +16,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4  # 현재 저장소의 코드를 가져옴 (필수 단계)
 
+      - name:  Decode EC2_KEY and show start
+        run: |
+          echo "${{ secrets.EC2_KEY }}" | base64 --decode | head -n 5
+
+
       - name: Set up JDK
         uses: actions/setup-java@v4  # Java 빌드 환경을 설정함
         with:
