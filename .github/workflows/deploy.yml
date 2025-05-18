@@ -55,7 +55,6 @@ jobs:
         with:
           host: ${{ secrets.EC2_HOST }}  # EC2 접속 주소 (ex. ec2-user@<퍼블릭 IP>)
           username: ec2-user  # Amazon Linux 기본 사용자명
-          key: ""
           key_path: ec2_key.pem  # 파일 직접 지정
           script: |
             docker pull ${{ secrets.ECR_REPOSITORY }}:latest
