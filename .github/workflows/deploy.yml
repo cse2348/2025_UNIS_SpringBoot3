@@ -27,8 +27,14 @@ jobs:
 
       - name: Build
         run: ./gradlew clean build -x test  # Gradle로 프로젝트를 빌드함. 테스트는 제외 (-x test)
-      - name: Rename JAR for Docker
-        run: cp build/libs/*.jar app.jar  # 생성된 JAR을 Docker에서 COPY할 수 있도록 이름 지정
+      - name: List JAR files # 디버깅용으로 JAR 목록 확인 (문제 추적용)
+        run: ls -al build/libs/
+
+      - name: Rename first JAR for Docker  # 가장 앞에 있는 JAR을 app.jar로 복사
+        run: |
+          JAR_NAME=$(ls build/libs/*.jar | head -n 1)
+          cp "$JAR_NAME" app.jar정
+
       - name: Login to ECR
         uses: aws-actions/amazon-ecr-login@v1  # ECR에 로그인. 이후 Docker push를 하기 위함
         with:
