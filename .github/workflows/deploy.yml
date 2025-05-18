@@ -33,7 +33,7 @@ jobs:
       - name: Rename first JAR for Docker  # 가장 앞에 있는 JAR을 app.jar로 복사
         run: |
           JAR_NAME=$(ls build/libs/*.jar | head -n 1)
-          cp "$JAR_NAME" app.jar정
+          cp "$JAR_NAME" app.jar
 
       - name: Login to ECR
         uses: aws-actions/amazon-ecr-login@v1  # ECR에 로그인. 이후 Docker push를 하기 위함
