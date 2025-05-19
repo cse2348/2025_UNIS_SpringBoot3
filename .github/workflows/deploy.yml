@@ -44,7 +44,7 @@ jobs:
         with:
           host: ${{ secrets.EC2_HOST }}  # EC2 접속 주소 (ex. ec2-user@<퍼블릭 IP>)
           username: ec2-user  # Amazon Linux 기본 사용자명
-          key: ${{ secrets.EC2_KEY }}  # base64로 인코딩된 pem 키 (GitHub Secrets에 등록된 값)
+          key: ${{ secrets.EC2_KEY }}  # base64로 인코딩된 pem 키 ( GitHub Secrets에 등록된 값)
           script: |
             docker pull 228041307119.dkr.ecr.ap-northeast-2.amazonaws.com/unis_repo:latest
             docker stop app || true && docker rm app || true
