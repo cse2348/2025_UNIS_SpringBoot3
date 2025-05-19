@@ -35,14 +35,9 @@ jobs:
 
       - name: Build and Push Docker Image
         run: |
-          IMAGE_URI=${{ secrets.ECR_REPOSITORY }}:latest  # 사용할 Docker 이미지 태그 정의
+          IMAGE_URI={ 228041307119.dkr.ecr.ap-northeast-2.amazonaws.com/unis_repo }:latest  # 사용할 Docker 이미지 태그 정의
           docker build -t $IMAGE_URI .  # 현재 디렉토리(.)에 있는 Dockerfile을 기준으로 이미지 빌드
           docker push $IMAGE_URI  # 빌드한 이미지를 ECR에 push (업로드)
-
-      - name: Decode SSH key and save to file
-        run: |
-          echo "${{ secrets.EC2_KEY }}" | base64 --decode > ec2_key.pem
-          chmod 600 ec2_key.pem
 
       - name: SSH into EC2 and Deploy
         uses: appleboy/ssh-action@v1.0.0  # EC2에 SSH로 접속하여 명령어를 실행하기 위한 액션
@@ -51,6 +46,6 @@ jobs:
           username: ec2-user  # Amazon Linux 기본 사용자명
           key: ${{ secrets.EC2_KEY }}  # base64로 인코딩된 pem 키 (GitHub Secrets에 등록된 값)
           script: |
-            docker pull ${{ secrets.ECR_REPOSITORY }}:latest
+            docker pull {228041307119.dkr.ecr.ap-northeast-2.amazonaws.com/unis_repo}:latest
             docker stop app || true && docker rm app || true
-            docker run -d --name app -p 8080:8080 ${{ secrets.ECR_REPOSITORY }}:latest
+            docker run -d --name app -p 8080:8080 {228041307119.dkr.ecr.ap-northeast-2.amazonaws.com/unis_repo}:latest
